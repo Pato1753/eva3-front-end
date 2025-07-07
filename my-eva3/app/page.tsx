@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Persona } from "./Persona";
+import { MostrarPersonas } from "./MostrarPersonas";
 
 const initialStatePersona:Persona = {
   nombre : "",
@@ -24,6 +25,20 @@ export default function Home() {
       {...personaNom,[name] : value }
     )
   }
+
+  const handleRegistrar = ()=>{
+    miStorange.setItem("personas",JSON.stringify([...personas,personaNom]))
+  }
+
+  // const handleActualizar
+
+  // const handleEliminar
+
+  const traerPersona = (p:Persona)=>{
+    setpersonaApe(p)
+  }
+    
+
 
   return (
     <>
@@ -49,8 +64,11 @@ export default function Home() {
             onChange={(e)=>{handlePersona(e.currentTarget.name,e.currentTarget.value)}}/>
             <br />
             <button style={{backgroundColor:"grey",border: '2px solid rgb(0, 0, 0)', marginTop:10, marginRight:13}}
-            id="BRegistro">Soy el boton de registro</button>
+            id="BRegistro"
+            onClick={()=>{handleRegistrar()}}>Soy el boton de registro</button>
           </form>
+
+           <MostrarPersonas Saludo = "Hola Como estas" traerPersona = {traerPersona}/>
         </div>
 
 
