@@ -20,16 +20,27 @@ export default function Home() {
   const [eApellido, setEApellido] = useState("")
   const [eRUT, setERUT] = useState("")
 
+let numeros = ["1","2","3","4","5","6","7","8","9","0"]
+
+
   const handlePersona = (name:string, value:string)=>{
     setpersonaNom(
       {...personaNom,[name] : value }
     )
     if(name == "nombre" && value.length<3){
-      seteNombre("El nombre debe tener mas de 2 caracteres")
+      seteNombre("El nombre debe tener mas de 3 caracteres")
     }else if(name=="nombre"&& value.length>2){
       seteNombre("")
     }
+    if(name == "apellido"&& value.length<2){
+      setEApellido("El apellido debe tener mas de 2 caracteres")
+    }else if(name=="apellido"&&value.length>2){
+      setEApellido("")
+    }
+
   }
+
+
   useEffect(()=>{
     let listadoStr = miStorange.getItem("personas")
     if(listadoStr != null){
@@ -70,7 +81,7 @@ export default function Home() {
             <input style={{textAlign : "center", backgroundColor:'#D3D3D3'}}
              type="text" name="nombre" placeholder="Nombre"
              onChange={(e)=>{handlePersona(e.currentTarget.name,e.currentTarget.value)}}/> <br />
-             
+
              <span>{eNombre}</span>
             <br />
 
@@ -78,6 +89,7 @@ export default function Home() {
             type="text" name="apellido" placeholder="Apellido"
             onChange={(e)=>{handlePersona(e.currentTarget.name,e.currentTarget.value)}}/>
             <br />
+            <span>{eApellido}</span> <br />
 
             <input style={{textAlign : "center",backgroundColor:'#D3D3D3', marginTop:5}}
             type= "number" name="rut" placeholder="Rut"
