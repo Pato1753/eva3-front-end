@@ -1,0 +1,21 @@
+
+2 COMIT: 
+
+En este comit lo que rescato, es la creacion de los estados iniciales de la persona, creando un
+estado inicial para nombre, apellido, rut y con sus respectivos errores (eNombre,eApellido), ademas de crear el componente persona
+que tendra como atributos el nombre, apellido y rut. Ademas de añadir algo de diseño a la pagina.
+
+
+MOSTRAR DATOS EN TIEMPO REAL:
+
+En este apartado se crea el handlePersona, y configurando cada input para que se pueda mosrtar en pantalla a tiempo real, a medida
+que se va escribiendo
+
+INICIANDO PROPS:
+
+Lo que se realizo en este comit, fue la creacion de un archivo llamado mosrtar personas, pero antes de eso se configuro el local storage 
+para que se vaya guardando el usuario y asi ir tenerlo todo en el archivo mostrar datos. Una vez creada la tabla se utilizo el PROPS, para
+que haya una comunicacion con los datos hacia el otro archivo, es decir pasar el html con los nombres, apellidos y rut al page.tsx    
+
+
+

@@ -28,13 +28,13 @@ let numeros = ["1","2","3","4","5","6","7","8","9","0"]
       {...personaNom,[name] : value }
     )
     if(name == "nombre" && value.length<3){
-      seteNombre("El nombre debe tener mas de 3 caracteres")
+      seteNombre("El nombre debe tener mas de 2 caracteres")
     }else if(name=="nombre"&& value.length>2){
       seteNombre("")
     }
-    if(name == "apellido"&& value.length<2){
-      setEApellido("El apellido debe tener mas de 2 caracteres")
-    }else if(name=="apellido"&&value.length>2){
+    if(name == "apellido"&& value.length<1){
+      setEApellido("El apellido debe tener mas de 1 caracteres")
+    }else if(name=="apellido"&&value.length>1){
       setEApellido("")
     }
 
