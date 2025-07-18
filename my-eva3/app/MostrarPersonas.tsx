@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { eliminarEstudiante, obtenerEstudiantes } from './firebase/firebaseServise'
+import { eliminarEstudiante, obtenerEstudiantes, PersonaConID } from './firebase/firebaseServise'
 interface Props{
     traerPersonas: () => void
 }
 
 export const MostrarPersonas = (props:Props) => {
-    const [personas, setPersonas] = useState<any[]>([])
+    const [personas, setPersonas] = useState<PersonaConID[]>([])
     const cargar = async () => {
             const datos = await obtenerEstudiantes()
             setPersonas(datos)
@@ -16,8 +16,15 @@ export const MostrarPersonas = (props:Props) => {
     },[props.traerPersonas])
 
     const queEliminar = async (id:string)=>{
-        await eliminarEstudiante(id)
-        props.traerPersonas()
+        console.log("ID recibido para eliminar (MostrarPersonas):", id); // Log 4
+        try {
+            await eliminarEstudiante(id); // Llama a la función que ahora tiene try-catch
+            console.log("Eliminación solicitada, recargando lista..."); // Log 5
+            await cargar(); // Recarga la lista para actualizar la UI
+            console.log("Lista recargada."); // Log 6
+        } catch (error) {
+            console.error("Error al manejar la eliminación en MostrarPersonas:", error); // Log 7
+        }
     }
     return(
         <>
@@ -31,7 +38,7 @@ export const MostrarPersonas = (props:Props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {personas.map((p,index)=>{
+                    {personas.map((p)=>{
                         return (
                             <tr key={p.id}>
                                 <td>{p.nombre}</td>

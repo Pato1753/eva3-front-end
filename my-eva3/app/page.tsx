@@ -12,6 +12,8 @@ const initialStatePersona:Persona = {
 }
 
 export default function Home() {
+
+  const [nuevoEstudiante, setnuevoEstudiante] = useState<Persona>(initialStatePersona);
   const [personaNom, setpersonaNom] = useState(initialStatePersona)
   const [personaApe, setpersonaApe] = useState(initialStatePersona)
   const [personaRUT, setpersonaRUT] = useState(initialStatePersona)
@@ -21,9 +23,10 @@ export default function Home() {
   const [eRUT, setERUT] = useState("")
 
   const handlePersona = (name:string, value:string)=>{
-    setpersonaNom(
-      {...personaNom,[name] : value }
-    )
+  setnuevoEstudiante(prev => ({
+    ...prev,
+    [name]: value
+}));
     if(name == "nombre" && value.length<3){
       seteNombre("El nombre debe tener mas de 2 caracteres")
     }else if(name=="nombre"&& value.length>2){
@@ -48,9 +51,9 @@ export default function Home() {
 
 
   const handleRegistrar = async()=>{
-    await agregarEstudiante(personaNom)
+    await agregarEstudiante(nuevoEstudiante)
     cargarPersonas()
-    setpersonaNom(initialStatePersona)
+    setnuevoEstudiante(initialStatePersona)
 
   }
 
@@ -69,20 +72,20 @@ export default function Home() {
           <form>
 
             <input style={{textAlign : "center", backgroundColor:'#D3D3D3'}}
-             type="text" name="nombre" placeholder="Nombre"
+             type="text" name="nombre" placeholder="Nombre" value={nuevoEstudiante.nombre}
              onChange={(e)=>{handlePersona(e.currentTarget.name,e.currentTarget.value)}}/> <br />
 
              <span>{eNombre}</span>
             <br />
 
             <input style={{textAlign : "center",backgroundColor:'#D3D3D3', marginTop:5}}
-            type="text" name="apellido" placeholder="Apellido"
+            type="text" name="apellido" placeholder="Apellido" value={nuevoEstudiante.apellido}
             onChange={(e)=>{handlePersona(e.currentTarget.name,e.currentTarget.value)}}/>
             <br />
             <span>{eApellido}</span> <br />
 
             <input style={{textAlign : "center",backgroundColor:'#D3D3D3', marginTop:5}}
-            type= "number" name="rut" placeholder="Rut"
+            type= "number" name="rut" placeholder="Rut" value={nuevoEstudiante.rut}
             onChange={(e)=>{handlePersona(e.currentTarget.name,e.currentTarget.value)}}/>
             <br />
 
