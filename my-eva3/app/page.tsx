@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Persona } from "./Persona";
 import { MostrarPersonas } from "./MostrarPersonas";
+import { agregarEstudiante, obtenerEstudiantes } from "./firebase/firebaseServise";
 
 const initialStatePersona:Persona = {
   nombre : "",
@@ -11,7 +12,6 @@ const initialStatePersona:Persona = {
 }
 
 export default function Home() {
-  const miStorange = window.localStorage
   const [personaNom, setpersonaNom] = useState(initialStatePersona)
   const [personaApe, setpersonaApe] = useState(initialStatePersona)
   const [personaRUT, setpersonaRUT] = useState(initialStatePersona)
@@ -19,9 +19,6 @@ export default function Home() {
   const [eNombre, seteNombre] = useState("")
   const [eApellido, setEApellido] = useState("")
   const [eRUT, setERUT] = useState("")
-
-let numeros = ["1","2","3","4","5","6","7","8","9","0"]
-
 
   const handlePersona = (name:string, value:string)=>{
     setpersonaNom(
@@ -40,30 +37,23 @@ let numeros = ["1","2","3","4","5","6","7","8","9","0"]
 
   }
 
+  const cargarPersonas = async() => {
+    const datos = await obtenerEstudiantes()
+    setpersonas(datos)
+  } 
 
   useEffect(()=>{
-    let listadoStr = miStorange.getItem("personas")
-    if(listadoStr != null){
-      let listado = JSON.parse(listadoStr)
-      setpersonas(listado)
-    }
-  })
+    cargarPersonas()
+  },[])
 
 
-  const handleRegistrar = ()=>{
-    miStorange.setItem("personas",JSON.stringify([...personas,personaNom]))
+  const handleRegistrar = async()=>{
+    await agregarEstudiante(personaNom)
+    cargarPersonas()
+    setpersonaNom(initialStatePersona)
+
   }
 
-  // const handleActualizar = ()=>{
-
-  // }
-
-  // const handleEliminar
-
-  const traerPersona = (p:Persona)=>{
-    setpersonaApe(p)
-  }
-    
 
 
   return (
@@ -98,9 +88,9 @@ let numeros = ["1","2","3","4","5","6","7","8","9","0"]
 
             <button style={{backgroundColor:"grey",border: '2px solid rgb(0, 0, 0)', marginTop:10, marginRight:13}}
             id="BRegistro"
-            onClick={()=>{handleRegistrar()}}>Registrar</button>
+            onClick={(e)=>{e.preventDefault();handleRegistrar()}}>Registrar</button>
 
-          <MostrarPersonas traerPersona={traerPersona}/>
+          <MostrarPersonas traerPersonas={cargarPersonas}/>
           </form>
           
             <h1>Apartado para editar</h1>
