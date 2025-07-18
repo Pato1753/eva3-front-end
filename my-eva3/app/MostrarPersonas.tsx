@@ -7,6 +7,7 @@ interface Props{
 export const MostrarPersonas = (props:Props) => {
     const miStorange = window.localStorage
     const [personas, setPersonas] = useState<Persona[]>([])
+    
     useEffect(()=>{
         let listadoStr = miStorange.getItem("personas")
         if(listadoStr != null){
