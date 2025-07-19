@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { eliminarEstudiante, obtenerEstudiantes, PersonaConID } from './firebase/firebaseServise'
 interface Props{
     traerPersonas: () => void
@@ -6,24 +6,24 @@ interface Props{
 
 export const MostrarPersonas = (props:Props) => {
     const [personas, setPersonas] = useState<PersonaConID[]>([])
-    const cargar = async () => {
+    const cargar = useCallback (async () => {
             const datos = await obtenerEstudiantes()
             setPersonas(datos)
-        }    
+        },[]);
 
     useEffect(()=>{
         cargar()
-    },[props.traerPersonas])
+    },[cargar])
 
     const queEliminar = async (id:string)=>{
-        console.log("ID recibido para eliminar (MostrarPersonas):", id); // Log 4
+        console.log("ID recibido para eliminar (MostrarPersonas):", id); 
         try {
-            await eliminarEstudiante(id); // Llama a la función que ahora tiene try-catch
-            console.log("Eliminación solicitada, recargando lista..."); // Log 5
-            await cargar(); // Recarga la lista para actualizar la UI
-            console.log("Lista recargada."); // Log 6
+            await eliminarEstudiante(id); 
+            console.log("Eliminación solicitada, recargando lista..."); 
+            await cargar(); 
+            console.log("Lista recargada."); 
         } catch (error) {
-            console.error("Error al manejar la eliminación en MostrarPersonas:", error); // Log 7
+            console.error("Error al manejar la eliminación en MostrarPersonas:", error); 
         }
     }
     return(
@@ -45,8 +45,8 @@ export const MostrarPersonas = (props:Props) => {
                                 <td>{p.apellido}</td>
                                 <td>{p.rut}</td>
                                 <td>
-                                    <button onClick={()=>queEditar(index)}>Editar</button>
-                                    <button onClick={()=>queEliminar(p.id)} >Eliminar</button>
+                                    <button type='button' onClick={()=>queEditar(index)}>Editar</button>
+                                    <button type='button' onClick={()=>queEliminar(p.id)} >Eliminar</button>
                                 </td>
                             </tr>
                         )

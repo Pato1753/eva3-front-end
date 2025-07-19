@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Persona } from "./Persona";
 import { MostrarPersonas } from "./MostrarPersonas";
 import { agregarEstudiante, obtenerEstudiantes } from "./firebase/firebaseServise";
@@ -14,9 +14,6 @@ const initialStatePersona:Persona = {
 export default function Home() {
 
   const [nuevoEstudiante, setnuevoEstudiante] = useState<Persona>(initialStatePersona);
-  const [personaNom, setpersonaNom] = useState(initialStatePersona)
-  const [personaApe, setpersonaApe] = useState(initialStatePersona)
-  const [personaRUT, setpersonaRUT] = useState(initialStatePersona)
   const [personas, setpersonas] = useState<Persona[]>([])
   const [eNombre, seteNombre] = useState("")
   const [eApellido, setEApellido] = useState("")
@@ -40,20 +37,26 @@ export default function Home() {
 
   }
 
-  const cargarPersonas = async() => {
+  const cargarPersonas = useCallback(async() => {
     const datos = await obtenerEstudiantes()
     setpersonas(datos)
-  } 
+  },[])
 
   useEffect(()=>{
     cargarPersonas()
-  },[])
+  },[cargarPersonas])
 
 
   const handleRegistrar = async()=>{
+  if (nuevoEstudiante.nombre && nuevoEstudiante.apellido && nuevoEstudiante.rut !== 0) {
+
     await agregarEstudiante(nuevoEstudiante)
     cargarPersonas()
     setnuevoEstudiante(initialStatePersona)
+  } else{
+    alert("Ingresa todos los datos del estudiante")
+  }
+
 
   }
 
@@ -66,9 +69,9 @@ export default function Home() {
         fontSize : 40, 
         textAlign : "center"}}> Lista de estudiante </h1>
         <div style={{textAlign : "right", marginRight : 20,marginTop : 20}}>
-          <p>Nombre:  {personaNom.nombre}</p>
-          <p>Apellido: {personaNom.apellido}</p>
-          <p>Rut:  {personaNom.rut}</p>
+          <p>Nombre:  {nuevoEstudiante.nombre}</p>
+          <p>Apellido: {nuevoEstudiante.apellido}</p>
+          <p>Rut:  {nuevoEstudiante.rut}</p>
           <form>
 
             <input style={{textAlign : "center", backgroundColor:'#D3D3D3'}}
@@ -99,12 +102,12 @@ export default function Home() {
             <h1>Apartado para editar</h1>
       
             <input type="text" name="nombre" placeholder="Nombre" 
-            value={personaApe.nombre} onChange={(e)=>{handlePersona(e.currentTarget.name,e.currentTarget.value)}}/> <br />
+            value={nuevoEstudiante.nombre} onChange={(e)=>{handlePersona(e.currentTarget.name,e.currentTarget.value)}}/> <br />
             <input type="text" name="apellido" placeholder="Apellido" 
-            value={personaApe.apellido} onChange={(e)=>{handlePersona(e.currentTarget.name,e.currentTarget.value)}}/> <br />
+            value={nuevoEstudiante.apellido} onChange={(e)=>{handlePersona(e.currentTarget.name,e.currentTarget.value)}}/> <br />
             <input type="number" name="rut" placeholder="Rut" 
-            value={personaApe.apellido} onChange={(e)=>{handlePersona(e.currentTarget.name,e.currentTarget.value)}}/> <br />
-            <button onClick={()=>{}}>Editar</button>
+            value={nuevoEstudiante.apellido} onChange={(e)=>{handlePersona(e.currentTarget.name,e.currentTarget.value)}}/> <br />
+            <button type="button" onClick={()=>{}}>Editar</button>
             
         </div>
 
