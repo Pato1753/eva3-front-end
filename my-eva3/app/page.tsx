@@ -53,8 +53,11 @@ export default function Home() {
     await agregarEstudiante(nuevoEstudiante)
     cargarPersonas()
     setnuevoEstudiante(initialStatePersona)
+    window.location.reload();
+    alert("Estudiante registrado")
   } else{
     alert("Ingresa todos los datos del estudiante")
+
   }
 
 
@@ -96,7 +99,7 @@ export default function Home() {
             id="BRegistro"
             onClick={(e)=>{e.preventDefault();handleRegistrar()}}>Registrar</button>
 
-          <MostrarPersonas traerPersonas={cargarPersonas}/>
+          <MostrarPersonas personas={personas} recargarPersonas={cargarPersonas}/>
           </form>
           
             <h1>Apartado para editar</h1>
